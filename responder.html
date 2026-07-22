@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responder Formulário</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topo">
+    <h1>Responder Formulário</h1>
+    <a class="voltar" href="index.html">&larr; Voltar</a>
+  </header>
+
+  <main class="container">
+    <section class="painel">
+      <h2 id="tituloFormulario">Carregando...</h2>
+      <p id="descricaoFormulario"></p>
+
+      <form id="formResposta">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" required>
+
+        <label for="email">E-mail</label>
+        <input type="email" id="email" required>
+
+        <div id="perguntasFormulario"></div>
+
+        <div class="acoes-form">
+          <button type="submit" id="btnEnviarResposta">Enviar</button>
+        </div>
+
+        <p id="erroResposta" class="erro"></p>
+        <p id="sucessoResposta" class="sucesso"></p>
+      </form>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/responder.js"></script>
+</body>
+</html>

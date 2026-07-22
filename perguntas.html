@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perguntas</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topo">
+    <h1>Perguntas</h1>
+    <a class="voltar" href="index.html">&larr; Voltar</a>
+  </header>
+
+  <main class="container">
+    <section class="painel">
+      <h2 id="tituloFormPergunta">Nova pergunta</h2>
+      <form id="formPergunta">
+        <input type="hidden" id="perguntaId">
+
+        <label for="enunciado">Enunciado</label>
+        <input type="text" id="enunciado" required>
+
+        <label for="tipo">Tipo</label>
+        <select id="tipo" required>
+          <option value="">Selecione...</option>
+          <option value="multipla_escolha">Múltipla escolha</option>
+          <option value="checkbox">Checkbox</option>
+          <option value="texto_curto">Texto curto</option>
+          <option value="texto_longo">Texto longo</option>
+        </select>
+
+        <label class="linha-checkbox">
+          <input type="checkbox" id="obrigatoria">
+          Pergunta obrigatória
+        </label>
+
+        <div id="blocoAlternativas" class="oculto">
+          <label>Alternativas</label>
+          <div id="listaAlternativas"></div>
+          <button type="button" id="btnAddAlternativa">+ Adicionar alternativa</button>
+        </div>
+
+        <div class="acoes-form">
+          <button type="submit" id="btnSalvarPergunta">Salvar</button>
+          <button type="button" id="btnCancelarEdicao" class="secundario oculto">Cancelar edição</button>
+        </div>
+
+        <p id="erroPergunta" class="erro"></p>
+      </form>
+    </section>
+
+    <section class="painel">
+      <h2>Perguntas cadastradas</h2>
+      <table id="tabelaPerguntas">
+        <thead>
+          <tr>
+            <th>Enunciado</th>
+            <th>Tipo</th>
+            <th>Obrigatória</th>
+            <th>Alternativas</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="corpoTabelaPerguntas"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/perguntas.js"></script>
+</body>
+</html>

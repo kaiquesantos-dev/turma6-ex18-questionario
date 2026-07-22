@@ -1,0 +1,41 @@
+{
+  "perguntas": [
+    {
+      "id": "1",
+      "enunciado": "Qual sua linguagem de programação favorita?",
+      "tipo": "multipla_escolha",
+      "obrigatoria": true,
+      "alternativas": ["JavaScript", "Python", "Java", "C#"],
+      "criadaEm": "2026-07-01T10:00:00.000Z"
+    },
+    {
+      "id": "2",
+      "enunciado": "O que você achou do curso?",
+      "tipo": "texto_longo",
+      "obrigatoria": true,
+      "alternativas": [],
+      "criadaEm": "2026-07-01T10:05:00.000Z"
+    },
+    {
+      "id": "3",
+      "enunciado": "Quais pontos podemos melhorar?",
+      "tipo": "checkbox",
+      "obrigatoria": false,
+      "alternativas": ["Conteúdo", "Suporte", "Material", "Exercícios"],
+      "criadaEm": "2026-07-01T10:10:00.000Z"
+    }
+  ],
+  "formularios": [
+    {
+      "id": "1",
+      "titulo": "Pesquisa de satisfação",
+      "descricao": "Avalie sua experiência com o nosso curso.",
+      "perguntas": ["1", "2", "3"],
+      "status": "publicado",
+      "dataInicio": "2026-07-01T00:00:00.000Z",
+      "dataFim": "2026-08-01T00:00:00.000Z",
+      "criadoEm": "2026-06-30T09:00:00.000Z"
+    }
+  ],
+  "respostas": []
+}

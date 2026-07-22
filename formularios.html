@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulários</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="topo">
+    <h1>Formulários</h1>
+    <a class="voltar" href="index.html">&larr; Voltar</a>
+  </header>
+
+  <main class="container">
+    <section class="painel">
+      <h2 id="tituloFormFormulario">Novo formulário</h2>
+      <form id="formFormulario">
+        <input type="hidden" id="formularioId">
+
+        <label for="titulo">Título</label>
+        <input type="text" id="titulo" required>
+
+        <label for="descricao">Descrição</label>
+        <textarea id="descricao"></textarea>
+
+        <label for="status">Status</label>
+        <select id="status">
+          <option value="rascunho">Rascunho</option>
+          <option value="publicado">Publicado</option>
+          <option value="encerrado">Encerrado</option>
+        </select>
+
+        <div class="linha-dupla">
+          <div>
+            <label for="dataInicio">Data início</label>
+            <input type="date" id="dataInicio">
+          </div>
+          <div>
+            <label for="dataFim">Data fim</label>
+            <input type="date" id="dataFim">
+          </div>
+        </div>
+
+        <label>Perguntas do formulário</label>
+        <div id="listaPerguntasDisponiveis" class="lista-selecao"></div>
+
+        <div class="acoes-form">
+          <button type="submit" id="btnSalvarFormulario">Salvar</button>
+          <button type="button" id="btnCancelarEdicaoFormulario" class="secundario oculto">Cancelar edição</button>
+        </div>
+
+        <p id="erroFormulario" class="erro"></p>
+      </form>
+    </section>
+
+    <section class="painel">
+      <h2>Formulários cadastrados</h2>
+      <table id="tabelaFormularios">
+        <thead>
+          <tr>
+            <th>Título</th>
+            <th>Status</th>
+            <th>Perguntas</th>
+            <th>Vigência</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody id="corpoTabelaFormularios"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="js/api.js"></script>
+  <script src="js/formularios.js"></script>
+</body>
+</html>
