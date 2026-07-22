@@ -1,0 +1,12 @@
+[
+  {
+    "pergunta": "Qual é a capital do Brasil?",
+    "opcoes": ["São Paulo", "Rio de Janeiro", "Brasília", "Salvador"],
+    "resposta": 2
+  },
+  {
+    "pergunta": "Quanto é 2 + 2?",
+    "opcoes": ["3", "4", "5", "6"],
+    "resposta": 1
+  }
+]
