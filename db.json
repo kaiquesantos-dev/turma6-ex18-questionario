@@ -5,7 +5,12 @@
       "enunciado": "Qual sua linguagem de programação favorita?",
       "tipo": "multipla_escolha",
       "obrigatoria": true,
-      "alternativas": ["JavaScript", "Python", "Java", "C#"],
+      "alternativas": [
+        "JavaScript",
+        "Python",
+        "Java",
+        "C#"
+      ],
       "criadaEm": "2026-07-01T10:00:00.000Z"
     },
     {
@@ -21,21 +26,153 @@
       "enunciado": "Quais pontos podemos melhorar?",
       "tipo": "checkbox",
       "obrigatoria": false,
-      "alternativas": ["Conteúdo", "Suporte", "Material", "Exercícios"],
+      "alternativas": [
+        "Conteúdo",
+        "Suporte",
+        "Material",
+        "Exercícios"
+      ],
       "criadaEm": "2026-07-01T10:10:00.000Z"
+    },
+    {
+      "enunciado": "Cor favorita",
+      "tipo": "checkbox",
+      "obrigatoria": false,
+      "alternativas": [
+        "rosa",
+        "azul",
+        "vermelho"
+      ],
+      "criadaEm": "2026-07-22T17:14:42.621Z",
+      "id": "LxpPLDF"
+    },
+    {
+      "id": "4",
+      "enunciado": "Qual é o seu usuário no GitHub?",
+      "tipo": "texto_curto",
+      "obrigatoria": false,
+      "alternativas": [],
+      "criadaEm": "2026-07-22T18:00:00.000Z"
+    },
+    {
+      "id": "5",
+      "enunciado": "Qual seu nível de experiência em programação?",
+      "tipo": "multipla_escolha",
+      "obrigatoria": true,
+      "alternativas": [
+        "Iniciante",
+        "Intermediário",
+        "Avançado",
+        "Especialista"
+      ],
+      "criadaEm": "2026-07-22T18:05:00.000Z"
+    },
+    {
+      "id": "6",
+      "enunciado": "Quais tecnologias você já utilizou?",
+      "tipo": "checkbox",
+      "obrigatoria": false,
+      "alternativas": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "Node.js",
+        "React"
+      ],
+      "criadaEm": "2026-07-22T18:10:00.000Z"
     }
   ],
   "formularios": [
     {
-      "id": "1",
       "titulo": "Pesquisa de satisfação",
       "descricao": "Avalie sua experiência com o nosso curso.",
-      "perguntas": ["1", "2", "3"],
       "status": "publicado",
       "dataInicio": "2026-07-01T00:00:00.000Z",
       "dataFim": "2026-08-01T00:00:00.000Z",
-      "criadoEm": "2026-06-30T09:00:00.000Z"
+      "perguntas": [
+        "1",
+        "2",
+        "3",
+        "5"
+      ],
+      "id": "1"
+    },
+    {
+      "titulo": "Cor favorita",
+      "descricao": "objetivo de saber a cor favorita da pessoa",
+      "status": "publicado",
+      "dataInicio": "2026-03-31T00:00:00.000Z",
+      "dataFim": "2026-12-31T00:00:00.000Z",
+      "perguntas": [
+        "LxpPLDF",
+        "4",
+        "6"
+      ],
+      "criadoEm": "2026-07-22T17:16:15.279Z",
+      "id": "wSZCyOb"
     }
   ],
-  "respostas": []
+  "respostas": [
+    {
+      "formularioId": "1",
+      "nome": "kaique",
+      "email": "kaique@gmail.ocm",
+      "respostas": [
+        {
+          "perguntaId": "1",
+          "valor": "Python"
+        }
+      ],
+      "enviadoEm": "2026-07-22T17:16:35.663Z",
+      "id": 1
+    },
+    {
+      "id": 2,
+      "formularioId": "1",
+      "nome": "Marina Alves",
+      "email": "marina.alves@email.com",
+      "respostas": [
+        { "perguntaId": "1", "valor": "JavaScript" },
+        { "perguntaId": "2", "valor": "Achei o curso muito completo e prático!" },
+        { "perguntaId": "3", "valor": ["Conteúdo", "Material"] },
+        { "perguntaId": "5", "valor": "Intermediário" }
+      ],
+      "enviadoEm": "2026-07-15T09:20:00.000Z"
+    },
+    {
+      "id": 3,
+      "formularioId": "1",
+      "nome": "Carlos Souza",
+      "email": "carlos.souza@email.com",
+      "respostas": [
+        { "perguntaId": "1", "valor": "Java" },
+        { "perguntaId": "2", "valor": "Bom curso, mas poderia ter mais exercícios práticos." },
+        { "perguntaId": "5", "valor": "Iniciante" }
+      ],
+      "enviadoEm": "2026-07-18T14:05:00.000Z"
+    },
+    {
+      "id": 4,
+      "formularioId": "wSZCyOb",
+      "nome": "Fernanda Lima",
+      "email": "fernanda.lima@email.com",
+      "respostas": [
+        { "perguntaId": "LxpPLDF", "valor": ["azul"] },
+        { "perguntaId": "4", "valor": "fernandalima-dev" },
+        { "perguntaId": "6", "valor": ["HTML", "CSS", "JavaScript"] }
+      ],
+      "enviadoEm": "2026-07-20T11:40:00.000Z"
+    },
+    {
+      "id": 5,
+      "formularioId": "wSZCyOb",
+      "nome": "Bruno Ramos",
+      "email": "bruno.ramos@email.com",
+      "respostas": [
+        { "perguntaId": "LxpPLDF", "valor": ["vermelho"] },
+        { "perguntaId": "6", "valor": ["Node.js", "React"] }
+      ],
+      "enviadoEm": "2026-07-21T16:10:00.000Z"
+    }
+  ]
 }

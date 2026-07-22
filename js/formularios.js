@@ -48,6 +48,11 @@ async function carregarFormularios() {
     const corpo = document.getElementById("corpoTabelaFormularios");
     corpo.innerHTML = "";
 
+    if (formularios.length === 0) {
+        corpo.innerHTML = `<tr><td colspan="5" class="vazio">Nenhum formulário cadastrado ainda.</td></tr>`;
+        return;
+    }
+
     formularios.forEach((formulario) => {
         // troca os ids de pergunta (["1","2"]) pelos enunciados de texto, pra exibição
         const enunciados = formulario.perguntas
@@ -129,6 +134,18 @@ async function salvarFormulario(evento) {
     const id = document.getElementById("formularioId").value;
 
     if (id) {
+        // regra 9 do enunciado: valida de verdade (não só desabilitando o checkbox na
+        // tela) que a composição de perguntas não mudou num formulário já respondido
+        const original = await buscarPorId("formularios", id);
+        const possuiRespostas = await formularioPossuiRespostas(id);
+        const perguntasOriginais = [...original.perguntas].sort().join(",");
+        const perguntasNovas = [...formulario.perguntas].sort().join(",");
+
+        if (possuiRespostas && perguntasOriginais !== perguntasNovas) {
+            erro.textContent = "Este formulário já possui respostas: não é possível alterar as perguntas selecionadas.";
+            return;
+        }
+
         await atualizar("formularios", id, formulario);
     } else {
         formulario.criadoEm = new Date().toISOString();
@@ -186,14 +203,38 @@ async function formularioPossuiRespostas(id) {
 // não pode excluir fisicamente se já existem respostas vinculadas
 async function excluirFormulario(id) {
     if (await formularioPossuiRespostas(id)) {
-        alert("Esse formulário já possui respostas registradas e não pode ser excluído. Altere o status para \"encerrado\" em vez disso.");
+        await Swal.fire({
+            icon: "error",
+            title: "Não é possível excluir",
+            text: "Esse formulário já possui respostas registradas e não pode ser excluído. Altere o status para \"encerrado\" em vez disso.",
+            confirmButtonColor: "#1f8bef"
+        });
         return;
     }
 
-    if (!confirm("Tem certeza que deseja excluir este formulário?")) {
+    const confirmacao = await Swal.fire({
+        icon: "warning",
+        title: "Excluir formulário?",
+        text: "Essa ação não pode ser desfeita.",
+        showCancelButton: true,
+        confirmButtonText: "Sim, excluir",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#e0473f",
+        cancelButtonColor: "#8b98a9"
+    });
+
+    if (!confirmacao.isConfirmed) {
         return;
     }
 
     await remover("formularios", id);
     carregarFormularios();
+
+    Swal.fire({
+        icon: "success",
+        title: "Formulário excluído",
+        confirmButtonColor: "#1f8bef",
+        timer: 1500,
+        showConfirmButton: false
+    });
 }

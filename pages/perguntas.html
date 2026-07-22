@@ -4,24 +4,33 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Perguntas</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
   <header class="topo">
-    <h1>Perguntas</h1>
-    <a class="voltar" href="index.html">&larr; Voltar</a>
+    <a class="topo-marca" href="index.html">📋 Questionários</a>
+    <nav class="topo-nav">
+      <a href="perguntas.html" class="ativo">Perguntas</a>
+      <a href="formularios.html">Formulários</a>
+      <a href="respostas.html">Respostas</a>
+    </nav>
   </header>
 
   <main class="container">
+    <h1 class="titulo-pagina">Perguntas</h1>
+
     <section class="painel">
       <h2 id="tituloFormPergunta">Nova pergunta</h2>
       <form id="formPergunta">
         <input type="hidden" id="perguntaId">
 
-        <label for="enunciado">Enunciado</label>
+        <label for="enunciado">Enunciado <span class="obrigatorio-marca">*</span></label>
         <input type="text" id="enunciado" required>
 
-        <label for="tipo">Tipo</label>
+        <label for="tipo">Tipo <span class="obrigatorio-marca">*</span></label>
         <select id="tipo" required>
           <option value="">Selecione...</option>
           <option value="multipla_escolha">Múltipla escolha</option>
@@ -52,22 +61,25 @@
 
     <section class="painel">
       <h2>Perguntas cadastradas</h2>
-      <table id="tabelaPerguntas">
-        <thead>
-          <tr>
-            <th>Enunciado</th>
-            <th>Tipo</th>
-            <th>Obrigatória</th>
-            <th>Alternativas</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
-        <tbody id="corpoTabelaPerguntas"></tbody>
-      </table>
+      <div class="tabela-scroll">
+        <table id="tabelaPerguntas">
+          <thead>
+            <tr>
+              <th>Enunciado</th>
+              <th>Tipo</th>
+              <th>Obrigatória</th>
+              <th>Alternativas</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="corpoTabelaPerguntas"></tbody>
+        </table>
+      </div>
     </section>
   </main>
 
-  <script src="js/api.js"></script>
-  <script src="js/perguntas.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/perguntas.js"></script>
 </body>
 </html>

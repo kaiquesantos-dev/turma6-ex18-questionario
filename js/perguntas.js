@@ -13,6 +13,11 @@ async function carregarPerguntas() {
     const corpo = document.getElementById("corpoTabelaPerguntas");
     corpo.innerHTML = ""; // limpa a tabela antes de preencher, senão duplica
 
+    if (perguntas.length === 0) {
+        corpo.innerHTML = `<tr><td colspan="5" class="vazio">Nenhuma pergunta cadastrada ainda.</td></tr>`;
+        return;
+    }
+
     perguntas.forEach((pergunta) => {
         const linha = document.createElement("tr");
         linha.innerHTML = `
@@ -133,6 +138,19 @@ async function salvarPergunta(evento) {
     const id = document.getElementById("perguntaId").value;
 
     if (id) {
+        // regra 8 do enunciado: valida de verdade (não só desabilitando o campo na tela)
+        // que tipo/alternativas não mudaram numa pergunta que já foi respondida
+        const original = await buscarPorId("perguntas", id);
+        const possuiRespostas = await perguntaPossuiRespostas(id);
+        const mudouTipoOuAlternativas =
+            original.tipo !== pergunta.tipo ||
+            JSON.stringify(original.alternativas) !== JSON.stringify(pergunta.alternativas);
+
+        if (possuiRespostas && mudouTipoOuAlternativas) {
+            erro.textContent = "Esta pergunta já foi respondida: não é possível alterar o tipo ou as alternativas. Cadastre uma nova pergunta em vez disso.";
+            return;
+        }
+
         await atualizar("perguntas", id, pergunta);
     } else {
         pergunta.criadaEm = new Date().toISOString();
@@ -146,6 +164,7 @@ async function salvarPergunta(evento) {
 // Preenche o formulário com os dados de uma pergunta existente, pra edição
 async function editarPergunta(id) {
     const pergunta = await buscarPorId("perguntas", id);
+    const possuiRespostas = await perguntaPossuiRespostas(id);
 
     document.getElementById("tituloFormPergunta").textContent = "Editar pergunta";
     document.getElementById("perguntaId").value = pergunta.id;
@@ -156,6 +175,14 @@ async function editarPergunta(id) {
     atualizarBlocoAlternativas();
     document.getElementById("listaAlternativas").innerHTML = "";
     pergunta.alternativas.forEach((alternativa) => adicionarCampoAlternativa(alternativa));
+
+    // regra 8 do enunciado: se a pergunta já foi respondida em algum formulário,
+    // não pode mudar o tipo nem as alternativas (invalidaria as respostas antigas)
+    document.getElementById("tipo").disabled = possuiRespostas;
+    document.getElementById("btnAddAlternativa").disabled = possuiRespostas;
+    document.querySelectorAll(".campo-alternativa, .btn-remover-alternativa").forEach((elemento) => {
+        elemento.disabled = possuiRespostas;
+    });
 
     document.getElementById("btnCancelarEdicao").classList.remove("oculto");
     window.scrollTo({ top: 0, behavior: "smooth" }); // sobe a página pro usuário ver o form
@@ -170,6 +197,8 @@ function cancelarEdicao() {
     document.getElementById("blocoAlternativas").classList.add("oculto");
     document.getElementById("btnCancelarEdicao").classList.add("oculto");
     document.getElementById("erroPergunta").textContent = "";
+    document.getElementById("tipo").disabled = false;
+    document.getElementById("btnAddAlternativa").disabled = false;
 }
 
 // Verifica se essa pergunta já foi respondida em algum formulário
@@ -185,14 +214,38 @@ async function perguntaPossuiRespostas(id) {
 // não pode excluir fisicamente se já existem respostas vinculadas
 async function excluirPergunta(id) {
     if (await perguntaPossuiRespostas(id)) {
-        alert("Essa pergunta já possui respostas registradas e não pode ser excluída.");
+        await Swal.fire({
+            icon: "error",
+            title: "Não é possível excluir",
+            text: "Essa pergunta já possui respostas registradas e não pode ser excluída.",
+            confirmButtonColor: "#1f8bef"
+        });
         return;
     }
 
-    if (!confirm("Tem certeza que deseja excluir esta pergunta?")) {
+    const confirmacao = await Swal.fire({
+        icon: "warning",
+        title: "Excluir pergunta?",
+        text: "Essa ação não pode ser desfeita.",
+        showCancelButton: true,
+        confirmButtonText: "Sim, excluir",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#e0473f",
+        cancelButtonColor: "#8b98a9"
+    });
+
+    if (!confirmacao.isConfirmed) {
         return;
     }
 
     await remover("perguntas", id);
     carregarPerguntas();
+
+    Swal.fire({
+        icon: "success",
+        title: "Pergunta excluída",
+        confirmButtonColor: "#1f8bef",
+        timer: 1500,
+        showConfirmButton: false
+    });
 }
