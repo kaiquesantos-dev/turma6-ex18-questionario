@@ -220,3 +220,13 @@ th {
 .lista-selecao input {
   width: auto;
 }
+
+.linha-alternativa {
+  display: flex;
+  gap: 8px;
+  margin: 6px 0;
+}
+
+.linha-alternativa input {
+  flex: 1;
+}
