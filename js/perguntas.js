@@ -1,3 +1,4 @@
+// Quando a página carrega: lista as perguntas e liga os eventos do formulário
 document.addEventListener("DOMContentLoaded", () => {
     carregarPerguntas();
     document.getElementById("tipo").addEventListener("change", atualizarBlocoAlternativas);
@@ -6,10 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("btnCancelarEdicao").addEventListener("click", cancelarEdicao);
 });
 
+// Busca as perguntas na API e monta uma linha de tabela pra cada uma
 async function carregarPerguntas() {
     const perguntas = await buscarRecursos("perguntas");
     const corpo = document.getElementById("corpoTabelaPerguntas");
-    corpo.innerHTML = "";
+    corpo.innerHTML = ""; // limpa a tabela antes de preencher, senão duplica
 
     perguntas.forEach((pergunta) => {
         const linha = document.createElement("tr");
@@ -26,6 +28,7 @@ async function carregarPerguntas() {
         corpo.appendChild(linha);
     });
 
+    // liga os cliques de Editar/Excluir só depois que os botões existem no DOM
     corpo.querySelectorAll("button[data-acao='editar']").forEach((botao) => {
         botao.addEventListener("click", () => editarPergunta(botao.dataset.id));
     });
@@ -34,10 +37,12 @@ async function carregarPerguntas() {
     });
 }
 
+// Só múltipla_escolha e checkbox usam alternativas (seção 3 do enunciado)
 function tipoTemAlternativas(tipo) {
     return tipo === "multipla_escolha" || tipo === "checkbox";
 }
 
+// Mostra/esconde o bloco de alternativas dependendo do tipo escolhido no select
 function atualizarBlocoAlternativas() {
     const tipo = document.getElementById("tipo").value;
     const bloco = document.getElementById("blocoAlternativas");
@@ -50,6 +55,8 @@ function atualizarBlocoAlternativas() {
     }
 }
 
+// Adiciona um campo de texto novo pra digitar mais uma alternativa,
+// com um botão pra remover essa linha caso o usuário desista dela
 function adicionarCampoAlternativa(valor = "") {
     const lista = document.getElementById("listaAlternativas");
     const linha = document.createElement("div");
@@ -62,12 +69,14 @@ function adicionarCampoAlternativa(valor = "") {
     lista.appendChild(linha);
 }
 
+// Lê todos os campos de alternativa preenchidos, ignorando os vazios
 function lerAlternativasDoFormulario() {
     return Array.from(document.querySelectorAll(".campo-alternativa"))
         .map((campo) => campo.value.trim())
         .filter((valor) => valor !== "");
 }
 
+// Validações da seção 3 e 5 do enunciado, ao cadastrar/editar uma pergunta
 function validarPergunta(pergunta) {
     if (!pergunta.enunciado) {
         return "O enunciado não pode ser vazio.";
@@ -80,6 +89,7 @@ function validarPergunta(pergunta) {
 
     if (tipoTemAlternativas(pergunta.tipo)) {
         const alternativas = pergunta.alternativas;
+        // Set remove duplicadas: se o tamanho diminuir, é porque tinha repetida
         const semDuplicadas = new Set(alternativas.map((a) => a.toLowerCase()));
 
         if (semDuplicadas.size !== alternativas.length) {
@@ -95,11 +105,12 @@ function validarPergunta(pergunta) {
         }
     }
 
-    return "";
+    return ""; // string vazia = sem erro
 }
 
+// Lida com o envio do formulário: monta o objeto, valida, e cria ou atualiza
 async function salvarPergunta(evento) {
-    evento.preventDefault();
+    evento.preventDefault(); // impede o navegador de recarregar a página
     const erro = document.getElementById("erroPergunta");
     erro.textContent = "";
 
@@ -115,9 +126,10 @@ async function salvarPergunta(evento) {
     const mensagemErro = validarPergunta(pergunta);
     if (mensagemErro) {
         erro.textContent = mensagemErro;
-        return;
+        return; // não chama a API se a validação falhar
     }
 
+    // campo escondido "perguntaId" preenchido = edição (PUT); vazio = criação (POST)
     const id = document.getElementById("perguntaId").value;
 
     if (id) {
@@ -131,6 +143,7 @@ async function salvarPergunta(evento) {
     carregarPerguntas();
 }
 
+// Preenche o formulário com os dados de uma pergunta existente, pra edição
 async function editarPergunta(id) {
     const pergunta = await buscarPorId("perguntas", id);
 
@@ -145,9 +158,10 @@ async function editarPergunta(id) {
     pergunta.alternativas.forEach((alternativa) => adicionarCampoAlternativa(alternativa));
 
     document.getElementById("btnCancelarEdicao").classList.remove("oculto");
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: "smooth" }); // sobe a página pro usuário ver o form
 }
 
+// Limpa o formulário e volta ao modo "nova pergunta"
 function cancelarEdicao() {
     document.getElementById("formPergunta").reset();
     document.getElementById("perguntaId").value = "";
@@ -158,6 +172,8 @@ function cancelarEdicao() {
     document.getElementById("erroPergunta").textContent = "";
 }
 
+// Verifica se essa pergunta já foi respondida em algum formulário
+// (procura o id dela dentro do array "respostas" de cada registro em respostas)
 async function perguntaPossuiRespostas(id) {
     const respostas = await buscarRecursos("respostas");
     return respostas.some((resposta) =>
@@ -165,6 +181,8 @@ async function perguntaPossuiRespostas(id) {
     );
 }
 
+// Exclui a pergunta, respeitando a regra 7 do enunciado:
+// não pode excluir fisicamente se já existem respostas vinculadas
 async function excluirPergunta(id) {
     if (await perguntaPossuiRespostas(id)) {
         alert("Essa pergunta já possui respostas registradas e não pode ser excluída.");
