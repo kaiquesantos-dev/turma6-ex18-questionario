@@ -241,6 +241,49 @@ form textarea {
   resize: vertical;
 }
 
+.subtitulo-form {
+  margin: 24px 0 4px;
+  padding-top: 16px;
+  border-top: 1px solid #eef1f6;
+  color: var(--azul-escuro);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+form h3.subtitulo-form:first-child {
+  margin-top: 0;
+  padding-top: 0;
+  border-top: none;
+}
+
+.barra-progresso-wrap {
+  margin: 4px 0 20px;
+}
+
+.barra-progresso-texto {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #5a6577;
+  margin-bottom: 6px;
+}
+
+.barra-progresso-fundo {
+  width: 100%;
+  height: 10px;
+  background-color: #e2e8f0;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.barra-progresso-preenchida {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, var(--azul-accent), var(--azul-accent-forte));
+  border-radius: 999px;
+  transition: width 0.25s ease;
+}
+
 .linha-checkbox {
   display: flex;
   align-items: center;

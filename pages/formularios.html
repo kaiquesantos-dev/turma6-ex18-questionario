@@ -27,12 +27,14 @@
       <form id="formFormulario">
         <input type="hidden" id="formularioId">
 
+        <h3 class="subtitulo-form">Informações gerais</h3>
         <label for="titulo">Título <span class="obrigatorio-marca">*</span></label>
         <input type="text" id="titulo" required>
 
         <label for="descricao">Descrição</label>
         <textarea id="descricao"></textarea>
 
+        <h3 class="subtitulo-form">Publicação</h3>
         <label for="status">Status</label>
         <select id="status">
           <option value="rascunho">Rascunho</option>
@@ -51,7 +53,7 @@
           </div>
         </div>
 
-        <label>Perguntas do formulário <span class="obrigatorio-marca">*</span></label>
+        <h3 class="subtitulo-form">Perguntas <span class="obrigatorio-marca">*</span></h3>
         <div id="listaPerguntasDisponiveis" class="lista-selecao"></div>
 
         <div class="acoes-form">

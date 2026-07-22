@@ -37,6 +37,7 @@ async function iniciar() {
         .filter(Boolean);
 
     renderizarPerguntas();
+    configurarBarraDeProgresso();
     document.getElementById("formResposta").addEventListener("submit", enviarResposta);
 }
 
@@ -52,6 +53,7 @@ function exibirIndisponivel(mensagem) {
     document.getElementById("tituloFormulario").textContent = "Indisponível";
     document.getElementById("descricaoFormulario").textContent = mensagem;
     document.getElementById("formResposta").classList.add("oculto");
+    document.getElementById("barraProgressoWrap").classList.add("oculto");
 }
 
 // Verifica a regra 3: status precisa ser "publicado" e a data de hoje
@@ -120,6 +122,39 @@ function campoParaTipo(pergunta) {
 
     // texto_longo: sem limite de caracteres, por isso é uma textarea
     return `<textarea name="pergunta-${pergunta.id}"></textarea>`;
+}
+
+// Liga a barra de progresso: mostra ela e recalcula a cada digitação/clique
+// dentro das perguntas, sem precisar apertar nenhum botão pra atualizar
+function configurarBarraDeProgresso() {
+    document.getElementById("barraProgressoWrap").classList.remove("oculto");
+
+    const container = document.getElementById("perguntasFormulario");
+    container.addEventListener("input", atualizarProgresso);
+    container.addEventListener("change", atualizarProgresso);
+
+    atualizarProgresso();
+}
+
+// Calcula quantas perguntas OBRIGATÓRIAS já têm resposta e atualiza a barra
+function atualizarProgresso() {
+    const obrigatorias = perguntasDoFormulario.filter((pergunta) => pergunta.obrigatoria);
+    const texto = document.getElementById("progressoTexto");
+    const preenchida = document.getElementById("progressoFill");
+
+    if (obrigatorias.length === 0) {
+        texto.textContent = "Este formulário não tem perguntas obrigatórias.";
+        preenchida.style.width = "100%";
+        return;
+    }
+
+    const respondidas = obrigatorias.filter(
+        (pergunta) => lerRespostaDaPergunta(pergunta) !== null
+    );
+    const percentual = Math.round((respondidas.length / obrigatorias.length) * 100);
+
+    texto.textContent = `${respondidas.length} de ${obrigatorias.length} perguntas obrigatórias respondidas`;
+    preenchida.style.width = `${percentual}%`;
 }
 
 // Lê o valor respondido pra uma pergunta específica, olhando pro tipo dela.
